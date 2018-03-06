@@ -1,6 +1,7 @@
 var canvas = document.getElementById("canvas-jogo");
 canvas.width = 480;
 canvas.height = 320;
+canvas.style.border = '1px solid black';
 var contexto = canvas.getContext("2d"); 
 
 /* VARIÁVEIS GLOBAIS */
@@ -9,8 +10,8 @@ var x = canvas.width/2;
 var y = canvas.height-30;
 
 //Velocidade da bola
-var dx = 3;
-var dy = -3;
+var dx = 2;
+var dy = -2;
 
 //Raio da bola
 var raioBola = 10;
@@ -35,7 +36,7 @@ function desenhaBola(){
 function desenhaBase() {
   contexto.beginPath();
   contexto.rect(baseX, canvas.height-baseAltura, baseLargura, baseAltura);
-  contexto.fillStyle = "#0095DD";
+  contexto.fillStyle = "#ff1200";
   contexto.fill();
   contexto.closePath();
 }
@@ -61,7 +62,7 @@ function desenha() {
 		//Senão termina o jogo
 		else{
 			//Imprime mensagem de gameover
-			alert("Fim do Jogo! Perdeu!");
+			console.error("Fim do Jogo! Perdeu!");
 			//Recarrega a página
 			document.location.reload();
 		}
@@ -104,4 +105,20 @@ function trataTeclaCima(evento){
   }
 }
 
-setInterval(desenha, 10);
+function interactions(){
+	var buttonPlay = document.querySelector('.btn-play');
+	var allInputs = document.querySelectorAll('.menu-list input');
+
+	allInputs.forEach(function(element, index){
+		element.addEventListener('change', function(){
+			dx = element.value;
+			dy = - element.value;
+			canvas.focus();
+		});
+	});
+	buttonPlay.addEventListener('click', function(){
+		setInterval(desenha, 10);
+	});
+}
+
+interactions();
