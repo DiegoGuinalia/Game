@@ -25,19 +25,19 @@ var teclaEsquerdaPressionada = false;
 var teclaDireitaPressionada = false;
 
 function desenhaBola(){
-	 contexto.beginPath();
-	 contexto.arc(x, y, raioBola, 0, Math.PI*2);
-	 contexto.fillStyle = "#0095DD";
-	 contexto.fill();
-	 contexto.closePath();
+	contexto.beginPath();
+	contexto.arc(x, y, raioBola, 0, Math.PI*2);
+	contexto.fillStyle = "#0095DD";
+	contexto.fill();
+	contexto.closePath();
 }
 
 function desenhaBase() {
-      contexto.beginPath();
-      contexto.rect(baseX, canvas.height-baseAltura, baseLargura, baseAltura);
-      contexto.fillStyle = "#0095DD";
-      contexto.fill();
-      contexto.closePath();
+  contexto.beginPath();
+  contexto.rect(baseX, canvas.height-baseAltura, baseLargura, baseAltura);
+  contexto.fillStyle = "#0095DD";
+  contexto.fill();
+  contexto.closePath();
 }
 	 
 function desenha() {	
@@ -46,13 +46,27 @@ function desenha() {
 	desenhaBase();
 	//Colisão com borda direita e esquerda
 	if(x + dx > canvas.width - raioBola || x + dx < raioBola){
-	    dx = -dx;
+    dx = -dx;
 	}
-
-	//Colisão com borda inferior e superior
-	if(y + dy > canvas.height - raioBola || y + dy < raioBola){
-	    dy = -dy;
+	//Colisão com borda superior
+	if(y + dy < raioBola){
+		dy = -dy;
 	}
+	//Colisão com a borda inferior
+	else if(y + dy > canvas.height - raioBola){
+		//Caso esteja na direção da base, altera o movimento da bola
+		if(x > baseX && x < baseX + baseLargura){
+			dy = -dy;
+		}
+		//Senão termina o jogo
+		else{
+			//Imprime mensagem de gameover
+			alert("Fim do Jogo! Perdeu!");
+			//Recarrega a página
+			document.location.reload();
+		}
+	}
+	
 	x += dx;
   y += dy;
 
@@ -80,14 +94,14 @@ function trataTeclaBaixo(evento){
 }
 
 function trataTeclaCima(evento){
-	//Se o keyCode == Seta para Direita
-    if(evento.keyCode == 39){
-        teclaDireitaPressionada = false;
-    }
-	//Se o keyCode == Seta para Esquerda
-    else if(evento.keyCode == 37){
-        teclaEsquerdaPressionada = false;
-    }
+//Se o keyCode == Seta para Direita
+  if(evento.keyCode == 39){
+      teclaDireitaPressionada = false;
+  }
+//Se o keyCode == Seta para Esquerda
+  else if(evento.keyCode == 37){
+      teclaEsquerdaPressionada = false;
+  }
 }
 
 setInterval(desenha, 10);
